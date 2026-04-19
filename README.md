@@ -1,0 +1,28 @@
+# Asteroids
+
+Implementation of the game Asteroids in C using [raylib](https://github.com/raysan5/raylib).
+
+## Controls
+
+### Ship
+
+* **W**, **K** or **Up Arrow**: Go forward;
+* **A or D**, **H or L** or **Left or Right Arrow**: Rotate ship;
+* **Spacebar**: Fire.
+
+### Extra
+
+* **Esc**: Pause;
+* **R**: Restart.
+
+# TODO
+
+- [ ] Implement asteroid struct and methods;
+- [ ] Implement bullet struct and methods;
+- [ ] Implement colision system;
+- [ ] Make ship unidirectional;
+- [ ] Implement ship fire;
+- [ ] Implement movement of the ship;
+- [ ] Implement asteroid manager math;
+- [ ] Implement score;
+- [ ] Implement main menu and controls;
