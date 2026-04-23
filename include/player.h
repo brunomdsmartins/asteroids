@@ -3,14 +3,13 @@
 
 #include <raylib.h>
 
+#define PLAYER_MAX_SHAPE 3
+
 typedef enum { PLAYER_TRIANGLE, PLAYER_SQUARE, PLAYER_CIRCLE } PlayerTypeEnum;
 
-typedef union {
-  struct {
+typedef struct {
     float length;
     float height;
-  };
-  float radius;
 } PlayerParameters;
 
 typedef struct {
@@ -19,7 +18,7 @@ typedef struct {
 } PlayerType;
 
 typedef struct {
-  Vector2 direction;
+  Vector2 center;
   float speed;
   PlayerType type;
 } Player;

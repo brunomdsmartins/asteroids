@@ -11,77 +11,47 @@
 
 static void Player_UpdateShape(Player *p) {
   if (IsKeyPressed(KEY_T)) {
-    switch (p->type.shape) {
-    case PLAYER_CIRCLE:
-      p->type.shape = PLAYER_TRIANGLE;
-      break;
-    case PLAYER_TRIANGLE:
-      p->type.shape = PLAYER_SQUARE;
-      break;
-    case PLAYER_SQUARE:
-      p->type.shape = PLAYER_CIRCLE;
-      break;
-    default:
-      break;
-    }
+    p->type.shape = (PlayerTypeEnum)((p->type.shape + 1) % PLAYER_MAX_SHAPE);
   }
 }
 
 static void Player_UpdateMovement(Player *p, float dt) {
   if (IsKeyDown(KEY_K) || IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
-    p->direction.y -= p->speed * dt;
+    p->center.y -= p->speed * dt;
   }
 
   if (IsKeyDown(KEY_J) || IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
-    p->direction.y += p->speed * dt;
+    p->center.y += p->speed * dt;
   }
 
   if (IsKeyDown(KEY_H) || IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
-    p->direction.x -= p->speed * dt;
+    p->center.x -= p->speed * dt;
   }
 
   if (IsKeyDown(KEY_L) || IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
-    p->direction.x += p->speed * dt;
+    p->center.x += p->speed * dt;
   }
 }
 
 static void Player_UpdateBorders(Player *p, Vector2 borders) {
   float left, right, top, bottom;
 
-  switch (p->type.shape) {
-  case PLAYER_CIRCLE:
-    left = p->direction.x - p->type.parameters.radius;
-    right = p->direction.x + p->type.parameters.radius;
-    top = p->direction.y - p->type.parameters.radius;
-    bottom = p->direction.y + p->type.parameters.radius;
-    break;
-
-  case PLAYER_TRIANGLE:
-    left = p->direction.x - p->type.parameters.length / 2.0f;
-    right = p->direction.x + p->type.parameters.length / 2.0f;
-    top = p->direction.y - (2.0f / 3.0f) * p->type.parameters.height;
-    bottom = p->direction.y + (1.0f / 3.0f) * p->type.parameters.height;
-    break;
-
-  default:
-    left = p->direction.x - p->type.parameters.length / 2.0f;
-    right = p->direction.x + p->type.parameters.length / 2.0f;
-    top = p->direction.y - p->type.parameters.height / 2.0f;
-    bottom = p->direction.y + p->type.parameters.height / 2.0f;
-    break;
-  };
+  left = p->center.x - p->type.parameters.length / 2.0f;
+  right = p->center.x + p->type.parameters.length / 2.0f;
+  top = p->center.y - p->type.parameters.height / 2.0f;
+  bottom = p->center.y + p->type.parameters.height / 2.0f;
 
   if (left < 0)
-    p->direction.x += -left;
+    p->center.x += -left;
 
   if (right > borders.x)
-    p->direction.x -= (right - borders.x);
+    p->center.x -= (right - borders.x);
 
   if (top < 0)
-    p->direction.y += -top;
+    p->center.y += -top;
 
   if (bottom > borders.y)
-    p->direction.y -= (bottom - borders.y);
+    p->center.y -= (bottom - borders.y);
 }
 
 /*
@@ -91,10 +61,11 @@ static void Player_UpdateBorders(Player *p, Vector2 borders) {
  */
 
 void Player_Init(Player *p) {
-  p->direction =
-      (Vector2){(float)SCREEN_WIDTH / 2.0f, (float)SCREEN_HEIGHT / 2.0f};
+  p->center = (Vector2){(float)SCREEN_WIDTH / 2.0f, (float)SCREEN_HEIGHT / 2.0f};
   p->speed = (float)PLAYER_SPEED;
-  p->type.shape = PLAYER_TRIANGLE;
+  p->type.shape = PLAYER_SQUARE;
+  p->type.parameters.length = SCREEN_WIDTH / 20.0f;
+  p->type.parameters.height = SCREEN_WIDTH / 20.0f;
 }
 
 void Player_Update(Player *p, float dt, Vector2 borders) {
@@ -105,28 +76,37 @@ void Player_Update(Player *p, float dt, Vector2 borders) {
 
 void Player_Draw(const Player *p) {
   switch (p->type.shape) {
-  case PLAYER_SQUARE:
-    DrawRectangle(p->direction.x - (p->type.parameters.length / 2),
-                  p->direction.y - (p->type.parameters.length / 2),
-                  p->type.parameters.length, p->type.parameters.height, RED);
-    break;
-  case PLAYER_TRIANGLE:
-    DrawTriangle(
-        // Nariz da cena
-        (Vector2){p->direction.x,
-                  p->direction.y + (p->type.parameters.height / 2)},
-        // Esquerdo da cena
-        (Vector2){p->direction.x - (p->type.parameters.length / 2.0f),
-                  p->direction.y - (p->type.parameters.length / 2.0f)},
-        // Direito da cena
-        (Vector2){p->direction.x + (p->type.parameters.length / 2.0f),
-                  p->direction.y - (p->type.parameters.length / 2.0f)},
-        RED);
-    break;
-  case PLAYER_CIRCLE:
-    DrawCircleV(p->direction, (p->type.parameters.length / 2.0f), RED);
-    break;
-  default:
-    break;
+    case PLAYER_SQUARE:
+      DrawRectangle(
+        p->center.x - (p->type.parameters.length / 2),
+        p->center.y - (p->type.parameters.length / 2),
+        p->type.parameters.length, 
+        p->type.parameters.height, 
+        RED
+      );
+      break;
+    case PLAYER_TRIANGLE:
+      Vector2 top = {
+          p->center.x,
+          p->center.y - (p->type.parameters.height / 2.0f)
+      };
+
+      Vector2 left = {
+          p->center.x - (p->type.parameters.length / 2.0f),
+          p->center.y + (p->type.parameters.height / 2.0f)
+      };
+
+      Vector2 right = {
+          p->center.x + (p->type.parameters.length / 2.0f),
+          p->center.y + (p->type.parameters.height / 2.0f)
+      };
+
+      DrawTriangle(top, left, right, RED);
+      break;
+    case PLAYER_CIRCLE:
+      DrawCircleV(p->center, (p->type.parameters.length / 2.0f), RED);
+      break;
+    default:
+      break;
   }
 };
