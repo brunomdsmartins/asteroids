@@ -3,10 +3,28 @@
 
 #include <raylib.h>
 
+typedef enum {
+  PLAYER_TRIANGLE,
+  PLAYER_SQUARE,
+  PLAYER_CIRCLE
+} PlayerTypeEnum;
+
 typedef struct {
-  Vector2 position;
-  float radius;
+  union {
+    struct {
+      float length;
+      float height;
+    };
+    float radius;
+  };
+  
+  PlayerTypeEnum shape;
+} PlayerType;
+
+typedef struct {
+  Vector2 direction;
   float speed;
+  PlayerType type;
 } Player;
 
 void Player_Init(Player *p);
