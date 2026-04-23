@@ -1,15 +1,15 @@
 #include <raylib.h>
 
-#include "game.h"
 #include "config.h"
+#include "game.h"
 
 int main(void) {
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Asteroids");
-    SetTargetFPS(60);
+  InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Asteroids");
+  SetTargetFPS(60);
 
-    Game_Run();
+  Game_Run();
 
-    CloseWindow();
+  CloseWindow();
 
-    return 0;
+  return 0;
 }

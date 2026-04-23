@@ -1,23 +1,20 @@
-#ifndef player_h
-#define player_h
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #include <raylib.h>
 
-typedef enum {
-  PLAYER_TRIANGLE,
-  PLAYER_SQUARE,
-  PLAYER_CIRCLE
-} PlayerTypeEnum;
+typedef enum { PLAYER_TRIANGLE, PLAYER_SQUARE, PLAYER_CIRCLE } PlayerTypeEnum;
+
+typedef union {
+  struct {
+    float length;
+    float height;
+  };
+  float radius;
+} PlayerParameters;
 
 typedef struct {
-  union {
-    struct {
-      float length;
-      float height;
-    };
-    float radius;
-  };
-  
+  PlayerParameters parameters;
   PlayerTypeEnum shape;
 } PlayerType;
 
