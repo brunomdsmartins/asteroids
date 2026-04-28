@@ -16,42 +16,51 @@ static void Player_UpdateShape(Player *p) {
 }
 
 static void Player_UpdateMovement(Player *p, float dt) {
-  if (IsKeyDown(KEY_K) || IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
-    p->center.y -= p->speed * dt;
-  }
+    Vector2 dir = {0, 0};
 
-  if (IsKeyDown(KEY_J) || IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
-    p->center.y += p->speed * dt;
-  }
+    if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP) || IsKeyDown(KEY_K))
+        dir.y -= 1.0f;
 
-  if (IsKeyDown(KEY_H) || IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
-    p->center.x -= p->speed * dt;
-  }
+    if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_J))
+        dir.y += 1.0f;
 
-  if (IsKeyDown(KEY_L) || IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
-    p->center.x += p->speed * dt;
-  }
+    if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_H))
+        dir.x -= 1.0f;
+
+    if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_L))
+        dir.x += 1.0f;
+
+    float len = sqrtf(dir.x * dir.x + dir.y * dir.y);
+
+    if (len > 0.0f)
+    {
+        dir.x /= len;
+        dir.y /= len;
+    }
+
+    p->physics.position.x += dir.x * p->physics.speed * dt;
+    p->physics.position.y += dir.y * p->physics.speed * dt;
 }
-
 static void Player_UpdateBorders(Player *p, Vector2 borders) {
-  float left, right, top, bottom;
+    float halfW = p->type.geometry.length * 0.5f;
+    float halfH = p->type.geometry.height * 0.5f;
 
-  left = p->center.x - p->type.parameters.length / 2.0f;
-  right = p->center.x + p->type.parameters.length / 2.0f;
-  top = p->center.y - p->type.parameters.height / 2.0f;
-  bottom = p->center.y + p->type.parameters.height / 2.0f;
+    float left   = p->physics.position.x - halfW;
+    float right  = p->physics.position.x + halfW;
+    float top    = p->physics.position.y - halfH;
+    float bottom = p->physics.position.y + halfH;
 
-  if (left < 0)
-    p->center.x += -left;
+    if (left < 0.0f)
+        p->physics.position.x -= left;
 
-  if (right > borders.x)
-    p->center.x -= (right - borders.x);
+    if (right > borders.x)
+        p->physics.position.x -= (right - borders.x);
 
-  if (top < 0)
-    p->center.y += -top;
+    if (top < 0.0f)
+        p->physics.position.y -= top;
 
-  if (bottom > borders.y)
-    p->center.y -= (bottom - borders.y);
+    if (bottom > borders.y)
+        p->physics.position.y -= (bottom - borders.y);
 }
 
 /*
@@ -61,11 +70,17 @@ static void Player_UpdateBorders(Player *p, Vector2 borders) {
  */
 
 void Player_Init(Player *p) {
-  p->center = (Vector2){(float)SCREEN_WIDTH / 2.0f, (float)SCREEN_HEIGHT / 2.0f};
-  p->speed = (float)PLAYER_SPEED;
+  p->physics.position = (Vector2){(float)HALF_SCREEN_WIDTH, (float)HALF_SCREEN_HEIGHT};
+  p->physics.speed = (float)PLAYER_BASE_SPEED;
+  
+  p->type.color = RED;
   p->type.shape = PLAYER_SQUARE;
-  p->type.parameters.length = SCREEN_WIDTH / 20.0f;
-  p->type.parameters.height = SCREEN_WIDTH / 20.0f;
+  p->type.geometry.length = (float)SCREEN_WIDTH / 20.0f;
+  p->type.geometry.height = (float)SCREEN_WIDTH / 20.0f;
+
+  p->stats.health = (float)PLAYER_BASE_HEALTH;
+  p->stats.damage = (float)PLAYER_BASE_DAMAGE;
+  p->stats.score = (float)PLAYER_BASE_SCORE;
 }
 
 void Player_Update(Player *p, float dt, Vector2 borders) {
@@ -75,38 +90,52 @@ void Player_Update(Player *p, float dt, Vector2 borders) {
 }
 
 void Player_Draw(const Player *p) {
-  switch (p->type.shape) {
-    case PLAYER_SQUARE:
-      DrawRectangle(
-        p->center.x - (p->type.parameters.length / 2),
-        p->center.y - (p->type.parameters.length / 2),
-        p->type.parameters.length, 
-        p->type.parameters.height, 
-        RED
-      );
-      break;
-    case PLAYER_TRIANGLE:
-      Vector2 top = {
-          p->center.x,
-          p->center.y - (p->type.parameters.height / 2.0f)
-      };
+    float halfW = p->type.geometry.length * 0.5f;
+    float halfH = p->type.geometry.height * 0.5f;
 
-      Vector2 left = {
-          p->center.x - (p->type.parameters.length / 2.0f),
-          p->center.y + (p->type.parameters.height / 2.0f)
-      };
+    switch (p->type.shape)
+    {
+        case PLAYER_SQUARE:
+            DrawRectangle(
+                (int)(p->physics.position.x - halfW),
+                (int)(p->physics.position.y - halfH),
+                (int)p->type.geometry.length,
+                (int)p->type.geometry.height,
+                p->type.color
+            );
+            break;
 
-      Vector2 right = {
-          p->center.x + (p->type.parameters.length / 2.0f),
-          p->center.y + (p->type.parameters.height / 2.0f)
-      };
+        case PLAYER_TRIANGLE:
+        {
+            Vector2 top = {
+                p->physics.position.x,
+                p->physics.position.y - halfH
+            };
 
-      DrawTriangle(top, left, right, RED);
-      break;
-    case PLAYER_CIRCLE:
-      DrawCircleV(p->center, (p->type.parameters.length / 2.0f), RED);
-      break;
-    default:
-      break;
-  }
-};
+            Vector2 left = {
+                p->physics.position.x - halfW,
+                p->physics.position.y + halfH
+            };
+
+            Vector2 right = {
+                p->physics.position.x + halfW,
+                p->physics.position.y + halfH
+            };
+
+            DrawTriangle(top, left, right, p->type.color);
+        }
+        break;
+
+        case PLAYER_CIRCLE:
+            DrawCircleV(
+                p->physics.position,
+                halfW,
+                p->type.color
+            );
+            break;
+    }
+}
+
+Vector2 Player_GetPosition(const Player *p) {
+  return p->physics.position;
+}
