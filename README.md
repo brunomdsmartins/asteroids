@@ -15,6 +15,13 @@ Implementation of the game Asteroids in C using [raylib](https://github.com/rays
 * **Esc**: Pause;
 * **R**: Restart.
 
+## Settings
+
+- Difficulty level
+- Player lives at start
+- Invincibility window after respawn
+- Toggle between keyboard layouts
+
 # TODO
 
 - [ ] Implement asteroid struct and methods;
