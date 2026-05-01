@@ -1,17 +1,22 @@
 #include <raylib.h>
+#include <stdio.h>
 
 #include "config.h"
 
 #include "game.h"
-#include "menu.h"
+#include "main_menu.h"
 #include "player.h"
+#include "settings_menu.h"
 
 void Game_Run(void) {
   GameState state = GAME_STATE_MENU;
   Player player;
   Menu menu;
+  Settings settings;
 
   Player_Init(&player);
+  Menu_Init(&menu);
+  Settings_Init(&settings);
 
   while (!WindowShouldClose() && state != GAME_STATE_EXIT) {
     float dt = GetFrameTime();
@@ -29,6 +34,7 @@ void Game_Run(void) {
       } else if (action == ACTION_EXIT) {
         state = GAME_STATE_EXIT;
       }
+
       BeginDrawing();
       ClearBackground(RAYWHITE);
       Menu_Draw(&menu);
@@ -49,6 +55,23 @@ void Game_Run(void) {
       EndDrawing();
     } break;
     case GAME_STATE_SETTINGS: {
+      Settings_Update(&settings);
+
+      // GameDifficulty difficulty = Settings_GetDifficulty(&settings);
+      // KeyboardLayout layout = Settings_GetLayout(&settings);
+      // printf("%i", difficulty);
+      // printf("%i", layout);
+
+      bool go_back = Settings_GoBack(&settings);
+
+      if (go_back == true) {
+        state = GAME_STATE_MENU;
+      }
+
+      BeginDrawing();
+      ClearBackground(RAYWHITE);
+      Settings_Draw(&settings);
+      EndDrawing();
     } break;
     default:
       break;

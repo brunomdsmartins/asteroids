@@ -1,7 +1,7 @@
 #include <raylib.h>
 
 #include "config.h"
-#include "menu.h"
+#include "main_menu.h"
 
 #define MENU_ITEMS 3
 
