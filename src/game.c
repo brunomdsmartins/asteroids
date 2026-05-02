@@ -2,24 +2,30 @@
 #include <stdio.h>
 
 #include "config.h"
-
 #include "game.h"
 #include "main_menu.h"
 #include "player.h"
 #include "settings_menu.h"
+#include "asteroid.h"
 
 void Game_Run(void) {
   GameState state = GAME_STATE_MENU;
   Player player;
   Menu menu;
   Settings settings;
+  AsteroidManager manager;
 
   Player_Init(&player);
   Menu_Init(&menu);
   Settings_Init(&settings);
+  manager = Asteroid_CreateManager();
+
+  unsigned int framesCounter = 0;
+  Vector2 borders = (Vector2){SCREEN_WIDTH, SCREEN_HEIGHT};
 
   while (!WindowShouldClose() && state != GAME_STATE_EXIT) {
     float dt = GetFrameTime();
+    int score = (int)GetTime();
 
     switch (state) {
     case GAME_STATE_MENU: {
@@ -41,26 +47,45 @@ void Game_Run(void) {
       EndDrawing();
     } break;
     case GAME_STATE_PLAYING: {
-      Player_Update(&player, dt, (Vector2){SCREEN_WIDTH, SCREEN_HEIGHT});
+      Player_Update(&player, dt, borders);
+
+      if (framesCounter % 120 == 0) {
+        if (Asteroid_Add(
+          &manager,
+          DARKGRAY,
+          ASTEROID_CIRCLE,
+          35,
+          35,
+          250,
+          1,
+          1,
+          10
+        )) {
+
+          Asteroid_Spawn(
+            &manager.data[manager.count - 1],
+            Player_GetPosition(&player)
+          );
+        }
+      }
+
+      Asteroid_UpdateAll(&manager, dt);
 
       BeginDrawing();
+      ClearBackground(RAYWHITE);
 
+      DrawText("WASD / HJKL / Arrows", 20, 20, 20, BLACK);
+      DrawText(TextFormat("Score: %d", score), 20, 50, 20, BLACK);
       DrawText("Press 'hjkl' to move", (float)SCREEN_WIDTH * 0.05,
                (float)SCREEN_HEIGHT * 0.05, 20, BLACK);
 
-      ClearBackground(RAYWHITE);
-
       Player_Draw(&player);
+      Asteroid_DrawAll(&manager);
 
       EndDrawing();
     } break;
     case GAME_STATE_SETTINGS: {
       Settings_Update(&settings);
-
-      // GameDifficulty difficulty = Settings_GetDifficulty(&settings);
-      // KeyboardLayout layout = Settings_GetLayout(&settings);
-      // printf("%i", difficulty);
-      // printf("%i", layout);
 
       bool go_back = Settings_GoBack(&settings);
 
@@ -76,5 +101,8 @@ void Game_Run(void) {
     default:
       break;
     }
+
+    framesCounter++;
   }
+  Asteroid_DestroyManager(&manager);
 }
