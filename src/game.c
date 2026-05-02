@@ -76,8 +76,6 @@ void Game_Run(void) {
 
       DrawText("WASD / HJKL / Arrows", 20, 20, 20, BLACK);
       DrawText(TextFormat("Score: %d", score), 20, 50, 20, BLACK);
-      DrawText("Press 'hjkl' to move", (float)SCREEN_WIDTH * 0.05,
-               (float)SCREEN_HEIGHT * 0.05, 20, BLACK);
 
       Player_Draw(&player);
       Asteroid_DrawAll(&manager);
