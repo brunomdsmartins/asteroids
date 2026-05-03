@@ -5,22 +5,6 @@
 
 #define PLAYER_BASE_SPEED 500.0f
 #define PLAYER_BASE_HEALTH 1.0f
-#define PLAYER_BASE_SCORE 0.0f
-
-typedef struct {
-  float length;
-  float height;
-} PlayerGeometry;
-
-typedef struct {
-  PlayerGeometry geometry;
-  Color color;
-} PlayerType;
-
-typedef struct {
-  Vector2 position;
-  float speed;
-} PlayerPhysics;
 
 typedef struct {
   float health;
@@ -28,8 +12,10 @@ typedef struct {
 } PlayerStats;
 
 typedef struct {
-  PlayerPhysics physics;
-  PlayerType type;
+  Vector2 position;
+  float rotation;
+  Color color;
+  float speed;
   PlayerStats stats;
 } Player;
 

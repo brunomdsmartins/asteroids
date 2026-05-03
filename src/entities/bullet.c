@@ -1,18 +1,57 @@
 #include "bullet.h"
 
+#include <math.h>
 #include <raylib.h>
-#include <stdbool.h>
 
-void Bullet_Init(Bullet *b) {
-  b->size = 32.0f;
-  b->alive = true;
+void BulletManager_Init(BulletManager *m) {
+  for (int i = 0; i < MAX_BULLETS; i++) {
+    m->data[i].active = false;
+    m->data[i].radius = 3.0f;
+    m->data[i].damage = BULLET_BASE_DAMAGE;
+  }
 }
 
-void Bullet_Update(Bullet *b, float dt) {
-  b->position.x += b->velocity.x * dt;
-  b->position.y += b->velocity.y * dt;
+void BulletManager_Spawn(BulletManager *bm, Vector2 position, float rotation) {
+
+  for (int i = 0; i < MAX_BULLETS; i++) {
+    if (!bm->data[i].active) {
+      bm->data[i].active = true;
+      bm->data[i].position = position;
+
+      float dirX = cosf(rotation);
+      float dirY = sinf(rotation);
+
+      bm->data[i].velocity.x = dirX * BULLET_BASE_SPEED;
+      bm->data[i].velocity.y = dirY * BULLET_BASE_SPEED;
+
+      bm->data[i].radius = 3.0f;
+      bm->data[i].damage = BULLET_BASE_DAMAGE;
+      return;
+    }
+  }
 }
 
-void Bullet_Draw(const Bullet *b) { DrawCircleV(b->position, b->size, RED); }
+void BulletManager_Update(BulletManager *m, float dt, Vector2 borders) {
+  for (int i = 0; i < MAX_BULLETS; i++) {
+    Bullet *b = &m->data[i];
+    if (!b->active)
+      continue;
 
-Vector2 Bullet_GetPosition(const Bullet *b) { return b->position; }
+    b->position.x += b->velocity.x * dt;
+    b->position.y += b->velocity.y * dt;
+
+    if (b->position.x < 0 || b->position.x > borders.x || b->position.y < 0 ||
+        b->position.y > borders.y) {
+      b->active = false;
+    }
+  }
+}
+
+void BulletManager_Draw(const BulletManager *m) {
+  for (int i = 0; i < MAX_BULLETS; i++) {
+    if (!m->data[i].active)
+      continue;
+
+    DrawCircleV(m->data[i].position, m->data[i].radius, BLACK);
+  }
+}

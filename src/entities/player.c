@@ -28,45 +28,42 @@ static void Player_UpdateMovement(Player *p, float dt) {
     dir.y /= len;
   }
 
-  p->physics.position.x += dir.x * p->physics.speed * dt;
-  p->physics.position.y += dir.y * p->physics.speed * dt;
+  p->position.x += dir.x * p->speed * dt;
+  p->position.y += dir.y * p->speed * dt;
 }
 
 static void Player_UpdateBorders(Player *p, Vector2 borders) {
-  float halfW = p->type.geometry.length * 0.5f;
-  float halfH = p->type.geometry.height * 0.5f;
+  float half_width = (float)SCREEN_WIDTH / 20.0f * 0.5f;
 
-  float left = p->physics.position.x - halfW;
-  float right = p->physics.position.x + halfW;
-  float top = p->physics.position.y - halfH;
-  float bottom = p->physics.position.y + halfH;
+  float left = p->position.x - half_width;
+  float right = p->position.x + half_width;
+  float top = p->position.y - half_width;
+  float bottom = p->position.y + half_width;
 
   if (left < 0.0f)
-    p->physics.position.x -= left;
+    p->position.x -= left;
 
   if (right > borders.x)
-    p->physics.position.x -= (right - borders.x);
+    p->position.x -= (right - borders.x);
 
   if (top < 0.0f)
-    p->physics.position.y -= top;
+    p->position.y -= top;
 
   if (bottom > borders.y)
-    p->physics.position.y -= (bottom - borders.y);
+    p->position.y -= (bottom - borders.y);
 }
 
 // PUBLIC PLAYER FUNCTIONS
 
 void Player_Init(Player *p) {
-  p->physics.position =
-      (Vector2){(float)HALF_SCREEN_WIDTH, (float)HALF_SCREEN_HEIGHT};
-  p->physics.speed = (float)PLAYER_BASE_SPEED;
 
-  p->type.color = RED;
-  p->type.geometry.length = (float)SCREEN_WIDTH / 20.0f;
-  p->type.geometry.height = (float)SCREEN_WIDTH / 20.0f;
-
+  p->position =
+      (Vector2){(float)(SCREEN_WIDTH / 2.0f), (float)(SCREEN_HEIGHT / 2.0f)};
+  p->rotation = 0;
+  p->color = RED;
+  p->speed = (float)PLAYER_BASE_SPEED;
   p->stats.health = (float)PLAYER_BASE_HEALTH;
-  p->stats.score = (float)PLAYER_BASE_SCORE;
+  p->stats.score = 0;
 }
 
 void Player_Update(Player *p, float dt, Vector2 borders) {
@@ -75,17 +72,15 @@ void Player_Update(Player *p, float dt, Vector2 borders) {
 }
 
 void Player_Draw(const Player *p) {
-  float halfW = p->type.geometry.length * 0.5f;
-  float halfH = p->type.geometry.height * 0.5f;
+  float half_width = (float)SCREEN_WIDTH / 20.0f * 0.5f;
 
-  Vector2 top = {p->physics.position.x, p->physics.position.y - halfH};
+  Vector2 top = {p->position.x, p->position.y - half_width};
 
-  Vector2 left = {p->physics.position.x - halfW, p->physics.position.y + halfH};
+  Vector2 left = {p->position.x - half_width, p->position.y + half_width};
 
-  Vector2 right = {p->physics.position.x + halfW,
-                   p->physics.position.y + halfH};
+  Vector2 right = {p->position.x + half_width, p->position.y + half_width};
 
-  DrawTriangle(top, left, right, p->type.color);
+  DrawTriangle(top, left, right, p->color);
 }
 
-Vector2 Player_GetPosition(const Player *p) { return p->physics.position; }
+Vector2 Player_GetPosition(const Player *p) { return p->position; }

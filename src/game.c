@@ -11,16 +11,17 @@
 void Game_Run(void) {
   GameState state = GAME_STATE_MENU;
   Player player;
-  Bullet bullet;
   Menu menu;
   Settings settings;
-  AsteroidManager manager;
+  BulletManager bullet_manager;
+  AsteroidManager asteroid_manager;
 
   Player_Init(&player);
   Menu_Init(&menu);
   Settings_Init(&settings);
-  Bullet_Init(&bullet);
-  manager = Asteroid_CreateManager();
+  BulletManager_Init(&bullet_manager);
+
+  asteroid_manager = Asteroid_CreateManager();
 
   unsigned int framesCounter = 0;
   Vector2 borders = (Vector2){SCREEN_WIDTH, SCREEN_HEIGHT};
@@ -49,18 +50,23 @@ void Game_Run(void) {
       EndDrawing();
     } break;
     case GAME_STATE_PLAYING: {
-      Player_Update(&player, dt, borders);
-
       if (framesCounter % 120 == 0) {
-        if (Asteroid_Add(&manager, DARKGRAY, ASTEROID_CIRCLE, 35, 35, 250, 1, 1,
-                         10)) {
+        if (Asteroid_Add(&asteroid_manager, DARKGRAY, ASTEROID_CIRCLE, 35, 35,
+                         250, 1, 1, 10)) {
 
-          Asteroid_Spawn(&manager.data[manager.count - 1],
+          Asteroid_Spawn(&asteroid_manager.data[asteroid_manager.count - 1],
                          Player_GetPosition(&player));
         }
       }
 
-      Asteroid_UpdateAll(&manager, dt);
+      if (IsKeyPressed(KEY_SPACE)) {
+        BulletManager_Spawn(&bullet_manager, Player_GetPosition(&player),
+                            player.rotation);
+      }
+
+      BulletManager_Update(&bullet_manager, dt, borders);
+      Player_Update(&player, dt, borders);
+      Asteroid_UpdateAll(&asteroid_manager, dt);
 
       BeginDrawing();
       ClearBackground(RAYWHITE);
@@ -69,7 +75,8 @@ void Game_Run(void) {
       DrawText(TextFormat("Score: %d", score), 20, 50, 20, BLACK);
 
       Player_Draw(&player);
-      Asteroid_DrawAll(&manager);
+      BulletManager_Draw(&bullet_manager);
+      Asteroid_DrawAll(&asteroid_manager);
 
       EndDrawing();
     } break;
@@ -93,5 +100,5 @@ void Game_Run(void) {
 
     framesCounter++;
   }
-  Asteroid_DestroyManager(&manager);
+  Asteroid_DestroyManager(&asteroid_manager);
 }
