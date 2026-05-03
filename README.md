@@ -5,7 +5,7 @@ Implementation of the game Asteroids in C using [raylib](https://github.com/rays
 ## Compile with
 
 ```sh
-make build && make run
+make clean && make run
 ```
 
 ## Controls
