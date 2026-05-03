@@ -1,5 +1,6 @@
 #include <raylib.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 #include "config.h"
 #include "settings_menu.h"
@@ -61,15 +62,70 @@ bool Settings_GoBack(Settings *s) {
   return result;
 }
 
-void Settings_Draw(Settings *s) {
-  const char *items[SETTINGS_ITEMS] = {"Difficulty", "Keyboard Layout",
-                                       "Invincibility After Dying", "Back"};
+static const char *GetDifficultyText(GameDifficulty d) {
+  switch (d) {
+  case DIFFICULTY_EASY:
+    return "Easy";
+  case DIFFICULTY_NORMAL:
+    return "Normal";
+  case DIFFICULTY_HARD:
+    return "Hard";
+  case DIFFICULTY_HARDCORE:
+    return "Hardcore";
+  default:
+    return "Unknown";
+  }
+}
 
+static const char *GetLayoutText(KeyboardLayout l) {
+  switch (l) {
+  case WASD:
+    return "WASD";
+  case ARROWS:
+    return "Arrows";
+  case VIM:
+    return "Vi";
+  default:
+    return "Unknown";
+  }
+}
+
+static const char *GetInvincibilityText(bool i) {
+  switch (i) {
+  case 1:
+    return "On";
+  default:
+    return "Off";
+  }
+}
+
+void Settings_Draw(Settings *s) {
   float initial_y = SCREEN_HEIGHT * 0.4f;
   float font_size = 32.0f;
 
   for (int i = 0; i < SETTINGS_ITEMS; i++) {
-    float text_width = (float)MeasureText(items[i], (int)font_size);
+    char buffer[128];
+
+    switch (i) {
+    case 0:
+      snprintf(buffer, sizeof(buffer), "Difficulty: %s",
+               GetDifficultyText(s->difficulty));
+      break;
+    case 1:
+      snprintf(buffer, sizeof(buffer), "Layout: %s", GetLayoutText(s->layout));
+      break;
+    case 2:
+      snprintf(buffer, sizeof(buffer), "Invincibility frames after dying: %s",
+               GetInvincibilityText(s->invincibility_after_dying));
+      break;
+    case 3:
+      snprintf(buffer, sizeof(buffer), "Back");
+      break;
+    default:
+      break;
+    }
+
+    float text_width = (float)MeasureText(buffer, (int)font_size);
 
     float padding = font_size * 0.5f;
 
@@ -89,6 +145,6 @@ void Settings_Draw(Settings *s) {
     float text_x = rect_x + (rect_width - text_width) * 0.5f;
     float text_y = rect_y + (rect_height - font_size) * 0.5f;
 
-    DrawText(items[i], text_x, text_y, (int)font_size, text_color);
+    DrawText(buffer, text_x, text_y, (int)font_size, text_color);
   }
 }

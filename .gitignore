@@ -2,7 +2,7 @@
 # C.gitignore
 
 # Binary
-game
+asteroids
 
 # Prerequisites
 *.d

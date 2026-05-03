@@ -11,7 +11,7 @@ SRC_DIR = src
 BUILD_DIR = build
 BIN_DIR = bin
 
-TARGET = $(BIN_DIR)/game
+TARGET = $(BIN_DIR)/asteroids
 
 SOURCES := $(shell find $(SRC_DIR) -name '*.c')
 OBJECTS := $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCES))
