@@ -12,8 +12,8 @@
 typedef enum { PLAYER_TRIANGLE, PLAYER_SQUARE, PLAYER_CIRCLE } PlayerTypeEnum;
 
 typedef struct {
-    float length;
-    float height;
+  float length;
+  float height;
 } PlayerGeometry;
 
 typedef struct {

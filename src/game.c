@@ -1,12 +1,12 @@
 #include <raylib.h>
 #include <stdio.h>
 
+#include "asteroid.h"
 #include "config.h"
 #include "game.h"
 #include "main_menu.h"
 #include "player.h"
 #include "settings_menu.h"
-#include "asteroid.h"
 
 void Game_Run(void) {
   GameState state = GAME_STATE_MENU;
@@ -50,22 +50,11 @@ void Game_Run(void) {
       Player_Update(&player, dt, borders);
 
       if (framesCounter % 120 == 0) {
-        if (Asteroid_Add(
-          &manager,
-          DARKGRAY,
-          ASTEROID_CIRCLE,
-          35,
-          35,
-          250,
-          1,
-          1,
-          10
-        )) {
+        if (Asteroid_Add(&manager, DARKGRAY, ASTEROID_CIRCLE, 35, 35, 250, 1, 1,
+                         10)) {
 
-          Asteroid_Spawn(
-            &manager.data[manager.count - 1],
-            Player_GetPosition(&player)
-          );
+          Asteroid_Spawn(&manager.data[manager.count - 1],
+                         Player_GetPosition(&player));
         }
       }
 
