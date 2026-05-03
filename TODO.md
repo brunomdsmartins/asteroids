@@ -9,8 +9,12 @@
 
 - [ ] Make ship movement unidirectional;
 - [ ] Make ship able to rotate;
-- [ ] Implement ship fire;
 - [ ] Add drift to the ship's thrust;
+
+## Bullets 
+
+- [x] Implement ship fire;
+- [ ] Implement fire in the direction of `player.rotation`;
 
 ## Asteroids
 
