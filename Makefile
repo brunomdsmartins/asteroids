@@ -2,8 +2,10 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror -MMD -MP \
          -Iinclude \
-         -Iinclude/Menu \
-         -Isrc/Menu
+         -Iinclude/menu \
+         -Isrc/menu \
+         -Iinclude/entities \
+         -Isrc/entities
 
 LDFLAGS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
