@@ -1,7 +1,7 @@
 #include <raylib.h>
-#include <stdio.h>
 
 #include "asteroid.h"
+#include "bullet.h"
 #include "config.h"
 #include "game.h"
 #include "main_menu.h"
@@ -11,6 +11,7 @@
 void Game_Run(void) {
   GameState state = GAME_STATE_MENU;
   Player player;
+  Bullet bullet;
   Menu menu;
   Settings settings;
   AsteroidManager manager;
@@ -18,6 +19,7 @@ void Game_Run(void) {
   Player_Init(&player);
   Menu_Init(&menu);
   Settings_Init(&settings);
+  Bullet_Init(&bullet);
   manager = Asteroid_CreateManager();
 
   unsigned int framesCounter = 0;
