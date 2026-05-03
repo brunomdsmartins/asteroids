@@ -4,11 +4,7 @@
 #include "config.h"
 #include "player.h"
 
-/*
- ******************************************************************************
- *                           PRIVATE PLAYER FUNCTIONS                         *
- ******************************************************************************
- */
+// PRIVATE PLAYER FUNCTIONS
 
 static void Player_UpdateMovement(Player *p, float dt) {
   Vector2 dir = {0, 0};
@@ -58,11 +54,7 @@ static void Player_UpdateBorders(Player *p, Vector2 borders) {
     p->physics.position.y -= (bottom - borders.y);
 }
 
-/*
- ******************************************************************************
- *                           PUBLIC PLAYER FUNCTIONS                          *
- ******************************************************************************
- */
+// PUBLIC PLAYER FUNCTIONS
 
 void Player_Init(Player *p) {
   p->physics.position =

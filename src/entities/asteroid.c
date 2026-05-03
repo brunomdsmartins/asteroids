@@ -5,11 +5,7 @@
 #include "asteroid.h"
 #include "config.h"
 
-/*
-******************************************************************************
-* PRIVATE FUNCTIONS
-******************************************************************************
-*/
+// PRIVATE ASTEROID FUNCTIONS
 
 static Vector2 Asteroid_GetSpawnOutside(const Asteroid *a) {
   int side = GetRandomValue(0, 3);
@@ -59,11 +55,7 @@ static void Asteroid_Init(Asteroid *a, Color color, AsteroidShape shape,
   a->active = true;
 }
 
-/*
-******************************************************************************
-* PUBLIC FUNCTIONS
-******************************************************************************
-*/
+// PUBLIC ASTEROID FUNCTIONS
 
 void Asteroid_Spawn(Asteroid *a, Vector2 playerPos) {
   a->physics.position = Asteroid_GetSpawnOutside(a);
