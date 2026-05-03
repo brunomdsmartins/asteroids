@@ -1,6 +1,6 @@
 # Asteroids
 
-Implementation of the game Asteroids in C using [raylib](https://github.com/raysan5/raylib).
+Implementation of the classic arcade game Asteroids in C using [raylib](https://github.com/raysan5/raylib).
 
 ## Compile with
 
@@ -12,30 +12,14 @@ make clean && make run
 
 ### Ship
 
-* **W**, **K** or **Up Arrow**: Go forward;
-* **A or D**, **H or L** or **Left or Right Arrow**: Rotate ship;
+* **W**, **K** or **Up Arrow**: Thrust forward;
+* **A**, **H** or **Left Arrow**: Rotate the ship left;
+* **D**, **L** or **Right Arrow**: Rotate the ship right;
+* **S**, **J** or **Down Arrow**: Hyperspace (teleport);
 * **Spacebar**: Fire.
 
-### Extra
+## Available Settings
 
-* **Esc**: Pause;
-* **R**: Restart.
-
-## Settings
-
-- Difficulty level
-- Player lives at start
-- Invincibility window after respawn
-- Toggle between keyboard layouts
-
-# TODO
-
-- [ ] Implement asteroid struct and methods;
-- [ ] Implement bullet struct and methods;
-- [ ] Implement colision system;
-- [ ] Make ship unidirectional;
-- [ ] Implement ship fire;
-- [ ] Implement movement of the ship;
-- [ ] Implement asteroid manager math;
-- [ ] Implement score;
-- [ ] Implement main menu and controls;
+- Difficulty level;
+- Toggle between keyboard layouts;
+- Invincibility window after respawn.
