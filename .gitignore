@@ -1,6 +1,9 @@
 # Created by https://gitignore.org
 # C.gitignore
 
+# Binary
+game
+
 # Prerequisites
 *.d
 
