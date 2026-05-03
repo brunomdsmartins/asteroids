@@ -10,7 +10,7 @@
  */
 
 static void Player_UpdateShape(Player *p) {
-        if (IsKeyPressed(KEY_T)) {
+  if (IsKeyPressed(KEY_T)) {
     p->type.shape = (PlayerTypeEnum)((p->type.shape + 1) % PLAYER_MAX_SHAPE);
   }
 }
