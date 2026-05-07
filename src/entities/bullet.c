@@ -12,14 +12,13 @@ void BulletManager_Init(BulletManager *m) {
 }
 
 void BulletManager_Spawn(BulletManager *bm, Vector2 position, float rotation) {
-
   for (int i = 0; i < MAX_BULLETS; i++) {
     if (!bm->data[i].active) {
       bm->data[i].active = true;
       bm->data[i].position = position;
 
-      float dirX = cosf(rotation);
-      float dirY = sinf(rotation);
+      float dirX = cosf(rotation - PI / 2.0f);
+      float dirY = sinf(rotation - PI / 2.0f);
 
       bm->data[i].velocity.x = dirX * BULLET_BASE_SPEED;
       bm->data[i].velocity.y = dirY * BULLET_BASE_SPEED;
