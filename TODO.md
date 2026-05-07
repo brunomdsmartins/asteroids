@@ -7,9 +7,10 @@
 
 ## Ship
 
-- [ ] Make ship movement unidirectional;
-- [ ] Make ship able to rotate;
+- [x] Make ship movement unidirectional;
+- [x] Make ship able to rotate;
 - [ ] Add drift to the ship's thrust;
+- [ ] Add teleport to player;
 
 ## Bullets 
 
