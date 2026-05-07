@@ -3,23 +3,11 @@
 
 #include <raylib.h>
 
-/*
- ******************************************************************************
- *                                CONSTANTS                                   *
- ******************************************************************************
- */
-
 #define ASTEROID_MAX_SHAPE 3
 #define ASTEROID_BASE_SPEED 500.0f
 #define ASTEROID_BASE_HEALTH 1.0f
 #define ASTEROID_BASE_DAMAGE 1.0f
 #define ASTEROID_BASE_POINTS 0.0f
-
-/*
- ******************************************************************************
- *                                TYPES                                       *
- ******************************************************************************
- */
 
 typedef enum {
   ASTEROID_TRIANGLE,
@@ -49,6 +37,7 @@ typedef struct {
   float damage;
   float points;
 } AsteroidStats;
+
 typedef struct {
   AsteroidPhysics physics;
   AsteroidType type;
@@ -61,12 +50,6 @@ typedef struct {
   int count;
   int capacity;
 } AsteroidManager;
-
-/*
- ******************************************************************************
- *                                API                                         *
- ******************************************************************************
- */
 
 void Asteroid_Spawn(Asteroid *a, Vector2 playerPos);
 void Asteroid_Update(Asteroid *a, float dt);
