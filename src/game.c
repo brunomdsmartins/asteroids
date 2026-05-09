@@ -71,7 +71,7 @@ void Game_Run(void) {
       BeginDrawing();
       ClearBackground(RAYWHITE);
 
-      DrawText("WASD / HJKL / Arrows", 20, 20, 20, BLACK);
+      DrawText(GetLayoutText(Settings_GetLayout(&settings)), 20, 20, 20, BLACK);
       DrawText(TextFormat("Score: %d", score), 20, 50, 20, BLACK);
 
       Player_Draw(&player);

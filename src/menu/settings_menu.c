@@ -77,14 +77,14 @@ static const char *GetDifficultyText(GameDifficulty d) {
   }
 }
 
-static const char *GetLayoutText(KeyboardLayout l) {
+const char *GetLayoutText(KeyboardLayout l) {
   switch (l) {
   case WASD:
     return "WASD";
   case ARROWS:
     return "Arrows";
   case VIM:
-    return "Vi";
+    return "Vim";
   default:
     return "Unknown";
   }

@@ -15,7 +15,7 @@
 ## Bullets 
 
 - [x] Implement ship fire;
-- [ ] Implement fire in the direction of `player.rotation`;
+- [x] Implement fire in the direction of `player.rotation`;
 
 ## Asteroids
 
