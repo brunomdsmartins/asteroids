@@ -3,6 +3,8 @@
 
 #include <raylib.h>
 
+#include "settings_menu.h"
+
 #define PLAYER_BASE_SPEED 500.0f
 #define PLAYER_BASE_HEALTH 1.0f
 
@@ -20,7 +22,7 @@ typedef struct {
 } Player;
 
 void Player_Init(Player *p);
-void Player_Update(Player *p, float dt, Vector2 borders);
+void Player_Update(Player *p, KeyboardLayout layout, float dt, Vector2 borders);
 void Player_Draw(const Player *p);
 Vector2 Player_GetPosition(const Player *p);
 

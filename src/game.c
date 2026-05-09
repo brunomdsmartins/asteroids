@@ -65,7 +65,7 @@ void Game_Run(void) {
       }
 
       BulletManager_Update(&bullet_manager, dt, borders);
-      Player_Update(&player, dt, borders);
+      Player_Update(&player, Settings_GetLayout(&settings), dt, borders);
       Asteroid_UpdateAll(&asteroid_manager, dt);
 
       BeginDrawing();

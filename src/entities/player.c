@@ -3,16 +3,43 @@
 
 #include "config.h"
 #include "player.h"
+#include "settings_menu.h"
 
 // PRIVATE PLAYER FUNCTIONS
 
-static void Player_UpdateMovement(Player *p, float dt) {
+static void Player_UpdateMovement(Player *p, KeyboardLayout layout, float dt) {
+  // Left, Bottom, Up, Right
+  int keys[4];
+
+  switch (layout) {
+  case WASD:
+    keys[0] = KEY_A;
+    keys[1] = KEY_S;
+    keys[2] = KEY_W;
+    keys[3] = KEY_D;
+    break;
+  case ARROWS:
+    keys[0] = KEY_LEFT;
+    keys[1] = KEY_DOWN;
+    keys[2] = KEY_UP;
+    keys[3] = KEY_RIGHT;
+    break;
+  case VIM:
+    keys[0] = KEY_H;
+    keys[1] = KEY_J;
+    keys[2] = KEY_K;
+    keys[3] = KEY_L;
+    break;
+  default:
+    break;
+  }
+
   float rotation_speed = 5.0f;
 
-  if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_H))
+  if (IsKeyDown(keys[0]))
     p->rotation -= rotation_speed * dt;
 
-  if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_L))
+  if (IsKeyDown(keys[3]))
     p->rotation += rotation_speed * dt;
 
   Vector2 forward = {
@@ -20,7 +47,7 @@ static void Player_UpdateMovement(Player *p, float dt) {
       sinf(p->rotation - PI / 2.0f),
   };
 
-  if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP) || IsKeyDown(KEY_K)) {
+  if (IsKeyDown(keys[2])) {
     p->position.x += forward.x * p->speed * dt;
     p->position.y += forward.y * p->speed * dt;
   }
@@ -59,8 +86,9 @@ void Player_Init(Player *p) {
   p->stats.score = 0;
 }
 
-void Player_Update(Player *p, float dt, Vector2 borders) {
-  Player_UpdateMovement(p, dt);
+void Player_Update(Player *p, KeyboardLayout layout, float dt,
+                   Vector2 borders) {
+  Player_UpdateMovement(p, layout, dt);
   Player_UpdateBorders(p, borders);
 }
 
