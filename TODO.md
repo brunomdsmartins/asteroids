@@ -4,7 +4,7 @@
 
 - [ ] Add screen wraparound;
 - [ ] Add highscores;
-- [ ] Add pause menu;
+- [x] Add pause menu;
 
 ## Ship
 
@@ -20,7 +20,8 @@
 
 ## Asteroids
 
-- [ ] Implement colision system;
+- [ ] Implement colision system with bullets;
+- [ ] Implement colision system with player;
 - [ ] Add different sizes asteroids;
 - [ ] Add scaling difficulty;
 
