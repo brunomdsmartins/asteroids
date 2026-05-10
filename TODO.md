@@ -4,6 +4,7 @@
 
 - [ ] Add screen wraparound;
 - [ ] Add highscores;
+- [ ] Add pause menu;
 
 ## Ship
 

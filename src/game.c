@@ -5,6 +5,7 @@
 #include "config.h"
 #include "game.h"
 #include "main_menu.h"
+#include "pause_menu.h"
 #include "player.h"
 #include "settings_menu.h"
 
@@ -13,18 +14,23 @@ void Game_Run(void) {
   Player player;
   Menu menu;
   Settings settings;
+  Pause pause;
   BulletManager bullet_manager;
   AsteroidManager asteroid_manager;
 
   Player_Init(&player);
   Menu_Init(&menu);
   Settings_Init(&settings);
+  Pause_Init(&pause, Settings_GetLayout(&settings));
   BulletManager_Init(&bullet_manager);
 
   asteroid_manager = Asteroid_CreateManager();
 
   unsigned int framesCounter = 0;
   Vector2 borders = (Vector2){SCREEN_WIDTH, SCREEN_HEIGHT};
+
+  // So escape doesn't exit the process
+  SetExitKey(KEY_LEFT_CONTROL);
 
   while (!WindowShouldClose() && state != GAME_STATE_EXIT) {
     float dt = GetFrameTime();
@@ -64,6 +70,10 @@ void Game_Run(void) {
                             player.rotation);
       }
 
+      if (IsKeyPressed(KEY_ESCAPE)) {
+        state = GAME_STATE_PAUSE;
+      }
+
       BulletManager_Update(&bullet_manager, dt, borders);
       Player_Update(&player, Settings_GetLayout(&settings), dt, borders);
       Asteroid_UpdateAll(&asteroid_manager, dt);
@@ -92,6 +102,20 @@ void Game_Run(void) {
       BeginDrawing();
       ClearBackground(RAYWHITE);
       Settings_Draw(&settings);
+      EndDrawing();
+    } break;
+    case GAME_STATE_PAUSE: {
+      Pause_Update(&pause);
+
+      bool resume = Pause_Resume(&pause);
+
+      if (resume == true) {
+        state = GAME_STATE_PLAYING;
+      }
+
+      BeginDrawing();
+      ClearBackground(RAYWHITE);
+      Pause_Draw(&pause);
       EndDrawing();
     } break;
     default:
