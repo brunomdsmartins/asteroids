@@ -5,6 +5,7 @@
 #include "config.h"
 #include "game.h"
 #include "main_menu.h"
+#include "pause_menu.h"
 #include "player.h"
 #include "settings_menu.h"
 
@@ -13,18 +14,23 @@ void Game_Run(void) {
   Player player;
   Menu menu;
   Settings settings;
+  Pause pause;
   BulletManager bullet_manager;
   AsteroidManager asteroid_manager;
 
   Player_Init(&player);
   Menu_Init(&menu);
   Settings_Init(&settings);
+  Pause_Init(&pause, Settings_GetLayout(&settings));
   BulletManager_Init(&bullet_manager);
 
   asteroid_manager = Asteroid_CreateManager();
 
   unsigned int framesCounter = 0;
   Vector2 borders = (Vector2){SCREEN_WIDTH, SCREEN_HEIGHT};
+
+  // So escape doesn't exit the process
+  SetExitKey(KEY_LEFT_CONTROL);
 
   while (!WindowShouldClose() && state != GAME_STATE_EXIT) {
     float dt = GetFrameTime();
@@ -64,14 +70,18 @@ void Game_Run(void) {
                             player.rotation);
       }
 
+      if (IsKeyPressed(KEY_ESCAPE)) {
+        state = GAME_STATE_PAUSE;
+      }
+
       BulletManager_Update(&bullet_manager, dt, borders);
-      Player_Update(&player, dt, borders);
+      Player_Update(&player, Settings_GetLayout(&settings), dt, borders);
       Asteroid_UpdateAll(&asteroid_manager, dt);
 
       BeginDrawing();
       ClearBackground(RAYWHITE);
 
-      DrawText("WASD / HJKL / Arrows", 20, 20, 20, BLACK);
+      DrawText(GetLayoutText(Settings_GetLayout(&settings)), 20, 20, 20, BLACK);
       DrawText(TextFormat("Score: %d", score), 20, 50, 20, BLACK);
 
       Player_Draw(&player);
@@ -84,7 +94,6 @@ void Game_Run(void) {
       Settings_Update(&settings);
 
       bool go_back = Settings_GoBack(&settings);
-
       if (go_back == true) {
         state = GAME_STATE_MENU;
       }
@@ -92,6 +101,23 @@ void Game_Run(void) {
       BeginDrawing();
       ClearBackground(RAYWHITE);
       Settings_Draw(&settings);
+      EndDrawing();
+    } break;
+    case GAME_STATE_PAUSE: {
+      Pause_Update(&pause, &settings);
+
+      bool resume = Pause_Resume(&pause);
+      if (resume == true)
+        state = GAME_STATE_PLAYING;
+
+      bool exit = Pause_Exit(&pause);
+      if (exit == true)
+        state = GAME_STATE_EXIT;
+
+      BeginDrawing();
+      // TODO: On changing layout, the box redraws itself
+      ClearBackground(RAYWHITE);
+      Pause_Draw(&pause, &settings);
       EndDrawing();
     } break;
     default:

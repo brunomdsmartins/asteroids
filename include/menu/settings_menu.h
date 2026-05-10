@@ -22,6 +22,7 @@ void Settings_Init(Settings *s);
 void Settings_Update(Settings *s);
 GameDifficulty Settings_GetDifficulty(Settings *s);
 KeyboardLayout Settings_GetLayout(Settings *s);
+const char *GetLayoutText(KeyboardLayout l);
 bool Settings_GoBack(Settings *s);
 void Settings_Draw(Settings *s);
 

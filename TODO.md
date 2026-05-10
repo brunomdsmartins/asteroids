@@ -4,6 +4,7 @@
 
 - [ ] Add screen wraparound;
 - [ ] Add highscores;
+- [ ] Add pause menu;
 
 ## Ship
 
@@ -15,7 +16,7 @@
 ## Bullets 
 
 - [x] Implement ship fire;
-- [ ] Implement fire in the direction of `player.rotation`;
+- [x] Implement fire in the direction of `player.rotation`;
 
 ## Asteroids
 
