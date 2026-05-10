@@ -2,9 +2,9 @@
 
 ## Game
 
-- [ ] Add screen wraparound;
-- [ ] Add highscores;
 - [x] Add pause menu;
+- [ ] Add highscores;
+- [ ] Make pause menu not take the whole screen;
 
 ## Ship
 
@@ -12,6 +12,7 @@
 - [x] Make ship able to rotate;
 - [ ] Add drift to the ship's thrust;
 - [ ] Add teleport to player;
+- [ ] Add screen wraparound to the player;
 
 ## Bullets 
 
