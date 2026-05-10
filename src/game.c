@@ -94,7 +94,6 @@ void Game_Run(void) {
       Settings_Update(&settings);
 
       bool go_back = Settings_GoBack(&settings);
-
       if (go_back == true) {
         state = GAME_STATE_MENU;
       }
@@ -105,17 +104,20 @@ void Game_Run(void) {
       EndDrawing();
     } break;
     case GAME_STATE_PAUSE: {
-      Pause_Update(&pause);
+      Pause_Update(&pause, &settings);
 
       bool resume = Pause_Resume(&pause);
-
-      if (resume == true) {
+      if (resume == true)
         state = GAME_STATE_PLAYING;
-      }
+
+      bool exit = Pause_Exit(&pause);
+      if (exit == true)
+        state = GAME_STATE_EXIT;
 
       BeginDrawing();
+      // TODO: On changing layout, the box redraws itself
       ClearBackground(RAYWHITE);
-      Pause_Draw(&pause);
+      Pause_Draw(&pause, &settings);
       EndDrawing();
     } break;
     default:

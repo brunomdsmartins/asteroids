@@ -5,15 +5,16 @@
 #include "config.h"
 #include "pause_menu.h"
 
-#define PAUSE_ITEMS 2
+#define PAUSE_ITEMS 3
 
 void Pause_Init(Pause *p, KeyboardLayout l) {
   p->selected = 0;
   p->resume = false;
+  p->exit = false;
   p->layout = l;
 }
 
-void Pause_Update(Pause *p) {
+void Pause_Update(Pause *p, Settings *s) {
   if (IsKeyPressed(KEY_DOWN)) {
     p->selected = (p->selected + 1) % PAUSE_ITEMS;
   }
@@ -28,11 +29,14 @@ void Pause_Update(Pause *p) {
       p->resume = true;
       break;
     case 1:
-      if (p->layout == VIM) {
-        p->layout = WASD;
+      if (s->layout == VIM) {
+        s->layout = WASD;
       } else {
-        p->layout++;
+        s->layout++;
       }
+      break;
+    case 2:
+      p->exit = true;
       break;
     default:
       break;
@@ -48,8 +52,14 @@ bool Pause_Resume(Pause *p) {
   return result;
 }
 
-void Pause_Draw(Pause *p) {
-  float initial_y = SCREEN_HEIGHT * 0.05f;
+bool Pause_Exit(Pause *p) {
+  bool result = p->exit;
+  p->exit = false; // Unnecessary?
+  return result;
+}
+
+void Pause_Draw(Pause *p, Settings *s) {
+  float initial_y = SCREEN_HEIGHT * 0.4f;
   float font_size = 32.0f;
 
   for (int i = 0; i < PAUSE_ITEMS; i++) {
@@ -60,7 +70,10 @@ void Pause_Draw(Pause *p) {
       snprintf(buffer, sizeof(buffer), "Resume");
       break;
     case 1:
-      snprintf(buffer, sizeof(buffer), "Layout: %s", GetLayoutText(p->layout));
+      snprintf(buffer, sizeof(buffer), "Layout: %s", GetLayoutText(s->layout));
+      break;
+    case 2:
+      snprintf(buffer, sizeof(buffer), "Exit");
       break;
     default:
       break;
