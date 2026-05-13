@@ -84,7 +84,7 @@ const char *GetLayoutText(KeyboardLayout l) {
   case ARROWS:
     return "Arrows";
   case VIM:
-    return "Vim";
+    return "HJKL";
   default:
     return "Unknown";
   }

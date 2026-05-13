@@ -2,9 +2,9 @@
 
 ## Game
 
-- [ ] Add screen wraparound;
+- [x] Add pause menu;
 - [ ] Add highscores;
-- [ ] Add pause menu;
+- [ ] Make pause menu not take the whole screen;
 
 ## Ship
 
@@ -12,6 +12,7 @@
 - [x] Make ship able to rotate;
 - [ ] Add drift to the ship's thrust;
 - [ ] Add teleport to player;
+- [ ] Add screen wraparound to the player;
 
 ## Bullets 
 
@@ -20,7 +21,8 @@
 
 ## Asteroids
 
-- [ ] Implement colision system;
+- [ ] Implement colision system with bullets;
+- [ ] Implement colision system with player;
 - [ ] Add different sizes asteroids;
 - [ ] Add scaling difficulty;
 

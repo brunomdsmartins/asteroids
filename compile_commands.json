@@ -1,0 +1,162 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Iinclude",
+      "-Iinclude/menu",
+      "-Isrc/menu",
+      "-Iinclude/entities",
+      "-Isrc/entities",
+      "-c",
+      "-o",
+      "build/menu/main_menu.o",
+      "src/menu/main_menu.c"
+    ],
+    "directory": "/home/bruno/Projects/asteriods",
+    "file": "/home/bruno/Projects/asteriods/src/menu/main_menu.c",
+    "output": "/home/bruno/Projects/asteriods/build/menu/main_menu.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Iinclude",
+      "-Iinclude/menu",
+      "-Isrc/menu",
+      "-Iinclude/entities",
+      "-Isrc/entities",
+      "-c",
+      "-o",
+      "build/menu/settings_menu.o",
+      "src/menu/settings_menu.c"
+    ],
+    "directory": "/home/bruno/Projects/asteriods",
+    "file": "/home/bruno/Projects/asteriods/src/menu/settings_menu.c",
+    "output": "/home/bruno/Projects/asteriods/build/menu/settings_menu.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Iinclude",
+      "-Iinclude/menu",
+      "-Isrc/menu",
+      "-Iinclude/entities",
+      "-Isrc/entities",
+      "-c",
+      "-o",
+      "build/menu/pause_menu.o",
+      "src/menu/pause_menu.c"
+    ],
+    "directory": "/home/bruno/Projects/asteriods",
+    "file": "/home/bruno/Projects/asteriods/src/menu/pause_menu.c",
+    "output": "/home/bruno/Projects/asteriods/build/menu/pause_menu.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Iinclude",
+      "-Iinclude/menu",
+      "-Isrc/menu",
+      "-Iinclude/entities",
+      "-Isrc/entities",
+      "-c",
+      "-o",
+      "build/main.o",
+      "src/main.c"
+    ],
+    "directory": "/home/bruno/Projects/asteriods",
+    "file": "/home/bruno/Projects/asteriods/src/main.c",
+    "output": "/home/bruno/Projects/asteriods/build/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Iinclude",
+      "-Iinclude/menu",
+      "-Isrc/menu",
+      "-Iinclude/entities",
+      "-Isrc/entities",
+      "-c",
+      "-o",
+      "build/entities/asteroid.o",
+      "src/entities/asteroid.c"
+    ],
+    "directory": "/home/bruno/Projects/asteriods",
+    "file": "/home/bruno/Projects/asteriods/src/entities/asteroid.c",
+    "output": "/home/bruno/Projects/asteriods/build/entities/asteroid.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Iinclude",
+      "-Iinclude/menu",
+      "-Isrc/menu",
+      "-Iinclude/entities",
+      "-Isrc/entities",
+      "-c",
+      "-o",
+      "build/entities/player.o",
+      "src/entities/player.c"
+    ],
+    "directory": "/home/bruno/Projects/asteriods",
+    "file": "/home/bruno/Projects/asteriods/src/entities/player.c",
+    "output": "/home/bruno/Projects/asteriods/build/entities/player.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Iinclude",
+      "-Iinclude/menu",
+      "-Isrc/menu",
+      "-Iinclude/entities",
+      "-Isrc/entities",
+      "-c",
+      "-o",
+      "build/entities/bullet.o",
+      "src/entities/bullet.c"
+    ],
+    "directory": "/home/bruno/Projects/asteriods",
+    "file": "/home/bruno/Projects/asteriods/src/entities/bullet.c",
+    "output": "/home/bruno/Projects/asteriods/build/entities/bullet.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Iinclude",
+      "-Iinclude/menu",
+      "-Isrc/menu",
+      "-Iinclude/entities",
+      "-Isrc/entities",
+      "-c",
+      "-o",
+      "build/game.o",
+      "src/game.c"
+    ],
+    "directory": "/home/bruno/Projects/asteriods",
+    "file": "/home/bruno/Projects/asteriods/src/game.c",
+    "output": "/home/bruno/Projects/asteriods/build/game.o"
+  }
+]
