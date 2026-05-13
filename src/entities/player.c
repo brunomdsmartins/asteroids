@@ -1,11 +1,22 @@
 #include <math.h>
 #include <raylib.h>
+#include <stdlib.h>
 
 #include "config.h"
 #include "player.h"
 #include "settings_menu.h"
 
 // PRIVATE PLAYER FUNCTIONS
+
+static Vector2 Player_GetRandomPosition() {
+  float randX = (float)rand() / ((float)RAND_MAX / SCREEN_WIDTH);
+  float randY = (float)rand() / ((float)RAND_MAX / SCREEN_HEIGHT);
+  return (Vector2){randX, randY};
+}
+
+static float Player_GetRandomRotation() {
+  return (float)rand() / ((float)RAND_MAX / 360);
+}
 
 static void Player_UpdateMovement(Player *p, KeyboardLayout layout, float dt) {
   // Left, Bottom, Up, Right
@@ -41,6 +52,12 @@ static void Player_UpdateMovement(Player *p, KeyboardLayout layout, float dt) {
 
   if (IsKeyDown(keys[3]))
     p->rotation += rotation_speed * dt;
+
+  // TODO: Make this only from time to time, maybe?
+  if (IsKeyPressed(keys[1])) {
+    p->position = Player_GetRandomPosition();
+    p->rotation = Player_GetRandomRotation();
+  }
 
   Vector2 forward = {
       cosf(p->rotation - PI / 2.0f),

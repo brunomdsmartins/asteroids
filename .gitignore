@@ -4,6 +4,9 @@
 # Binary
 asteroids
 
+# bear
+.cache
+
 # Prerequisites
 *.d
 
