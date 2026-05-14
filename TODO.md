@@ -10,8 +10,8 @@
 
 - [x] Make ship movement unidirectional;
 - [x] Make ship able to rotate;
+- [x] Add teleport to player;
 - [ ] Add drift to the ship's thrust;
-- [ ] Add teleport to player;
 - [ ] Add screen wraparound to the player;
 
 ## Bullets 
