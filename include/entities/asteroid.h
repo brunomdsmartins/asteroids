@@ -10,21 +10,16 @@
 #define ASTEROID_BASE_POINTS 0.0f
 
 typedef enum {
-  ASTEROID_TRIANGLE,
-  ASTEROID_SQUARE,
-  ASTEROID_CIRCLE
-} AsteroidShape;
+  ASTEROID_SMALL,
+  ASTEROID_MEDIUM,
+  ASTEROID_LARGE,
+} AsteroidSize;
 
 typedef struct {
-  float length;
-  float height;
-} AsteroidGeometry;
-
-typedef struct {
-  AsteroidGeometry geometry;
-  AsteroidShape shape;
+  float radius;
+  AsteroidSize size;
   Color color;
-} AsteroidType;
+} AsteroidGeometry;
 
 typedef struct {
   Vector2 position;
@@ -40,7 +35,7 @@ typedef struct {
 
 typedef struct {
   AsteroidPhysics physics;
-  AsteroidType type;
+  AsteroidGeometry geometry;
   AsteroidStats stats;
   bool active;
 } Asteroid;
@@ -51,14 +46,13 @@ typedef struct {
   int capacity;
 } AsteroidManager;
 
+Asteroid Asteroid_GetRandomProfile();
 void Asteroid_Spawn(Asteroid *a, Vector2 playerPos);
 void Asteroid_Update(Asteroid *a, float dt);
 void Asteroid_Draw(const Asteroid *a);
 AsteroidManager Asteroid_CreateManager(void);
 void Asteroid_DestroyManager(AsteroidManager *m);
-bool Asteroid_Add(AsteroidManager *m, Color color, AsteroidShape shape,
-                  float length, float height, float speed, float health,
-                  float damage, float points);
+bool Asteroid_Add(AsteroidManager *m, Asteroid a);
 void Asteroid_UpdateAll(AsteroidManager *m, float dt);
 void Asteroid_DrawAll(AsteroidManager *m);
 

@@ -56,9 +56,10 @@ void Game_Run(void) {
       EndDrawing();
     } break;
     case GAME_STATE_PLAYING: {
-      if (framesCounter % 120 == 0) {
-        if (Asteroid_Add(&asteroid_manager, DARKGRAY, ASTEROID_CIRCLE, 35, 35,
-                         250, 1, 1, 10)) {
+      if (framesCounter % 30 == 0) {
+        Asteroid asteroid = Asteroid_GetRandomProfile();
+
+        if (Asteroid_Add(&asteroid_manager, asteroid)) {
 
           Asteroid_Spawn(&asteroid_manager.data[asteroid_manager.count - 1],
                          Player_GetPosition(&player));
@@ -83,6 +84,9 @@ void Game_Run(void) {
 
       DrawText(GetLayoutText(Settings_GetLayout(&settings)), 20, 20, 20, BLACK);
       DrawText(TextFormat("Score: %d", score), 20, 50, 20, BLACK);
+      DrawText(
+          TextFormat("Number of Enemies on Screen: %d", asteroid_manager.count),
+          20, 80, 20, BLACK);
 
       Player_Draw(&player);
       BulletManager_Draw(&bullet_manager);
