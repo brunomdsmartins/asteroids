@@ -21,9 +21,9 @@
 
 ## Asteroids
 
+- [x] Add different sizes asteroids;
 - [ ] Implement colision system with bullets;
 - [ ] Implement colision system with player;
-- [ ] Add different sizes asteroids;
 - [ ] Add scaling difficulty;
 
 ## Flying Saucers
