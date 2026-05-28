@@ -3,7 +3,9 @@
 #include "asteroid.h"
 #include "bullet.h"
 #include "config.h"
+#include "database.h"
 #include "game.h"
+#include "highscores.h"
 #include "main_menu.h"
 #include "pause_menu.h"
 #include "player.h"
@@ -18,6 +20,17 @@ void Game_Run(void) {
   BulletManager bullet_manager;
   AsteroidManager asteroid_manager;
 
+  Database db;
+
+  if (!DB_Open(&db)) {
+    return;
+  }
+
+  if (!Highscore_Init(&db)) {
+    DB_Close(&db);
+    return;
+  }
+
   Player_Init(&player);
   Menu_Init(&menu);
   Settings_Init(&settings);
@@ -29,12 +42,13 @@ void Game_Run(void) {
   unsigned int framesCounter = 0;
   Vector2 borders = (Vector2){SCREEN_WIDTH, SCREEN_HEIGHT};
 
+  int score = 0;
+
   // So escape doesn't exit the process
   SetExitKey(KEY_LEFT_CONTROL);
 
   while (!WindowShouldClose() && state != GAME_STATE_EXIT) {
     float dt = GetFrameTime();
-    int score = (int)GetTime();
 
     switch (state) {
     case GAME_STATE_MENU: {
@@ -56,6 +70,8 @@ void Game_Run(void) {
       EndDrawing();
     } break;
     case GAME_STATE_PLAYING: {
+      score += (int)(dt * 100);
+
       if (framesCounter % 30 == 0) {
         Asteroid asteroid = Asteroid_GetRandomProfile();
 
@@ -130,5 +146,10 @@ void Game_Run(void) {
 
     framesCounter++;
   }
+
+  Highscore_Add(&db, "Player", score);
+
+  DB_Close(&db);
+
   Asteroid_DestroyManager(&asteroid_manager);
 }

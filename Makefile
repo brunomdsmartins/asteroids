@@ -5,7 +5,9 @@ CFLAGS = -Wall -Wextra -Werror -MMD -MP \
          -Iinclude/menu \
          -Isrc/menu \
          -Iinclude/entities \
-         -Isrc/entities
+         -Isrc/entities \
+         -Iinclude/database \
+         -Isrc/database
 
 LDFLAGS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
