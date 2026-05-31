@@ -9,7 +9,7 @@ CFLAGS = -Wall -Wextra -Werror -MMD -MP \
          -Iinclude/database \
          -Isrc/database
 
-LDFLAGS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+LDFLAGS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -lsqlite3
 
 SRC_DIR = src
 BUILD_DIR = build
